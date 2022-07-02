@@ -4,7 +4,8 @@ import { isDev, toggleDev } from '~/composables'
 import { PlayGames } from '~/composables/login'
 
 const play = new PlayGames()
-const state = play.state
+useStorage('minesweeper-state', play.state)
+const state = computed(() => play.board)
 </script>
 
 <template>
