@@ -6,6 +6,8 @@ import { PlayGames } from '~/composables/login'
 const play = new PlayGames()
 useStorage('minesweeper-state', play.state)
 const state = computed(() => play.board)
+watchEffect(() => play.checkGameStatus())
+const countMines = computed(() => play.blocks.reduce((a, b) => a + (b.mine ? 1 : 0), 0))
 </script>
 
 <template>
@@ -24,6 +26,7 @@ const state = computed(() => play.board)
       />
     </div>
     <div flex="~ gap-2" justify-center>
+      <div>Count:{{ countMines }}</div>
       <button btn @click="toggleDev(!isDev)">
         {{ isDev ? 'DEV' : 'NORMAL' }}
       </button>
