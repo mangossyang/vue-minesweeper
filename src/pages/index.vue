@@ -11,12 +11,12 @@ const countMines = computed(() => play.blocks.reduce((a, b) => a + (b.mine ? 1 :
 </script>
 
 <template>
-  <div p5>
+  <div p5 w-full overflow-auto>
     minesweeper
     <div
       v-for="row, y in state" :key="y"
       flex="~"
-      items-center justify-center
+      items-center justify-center w-max ma
     >
       <MineBlock
         v-for="block, x in row" :key="x"
@@ -34,5 +34,6 @@ const countMines = computed(() => play.blocks.reduce((a, b) => a + (b.mine ? 1 :
         RESET
       </button>
     </div>
+    <Confetti :passed="play.state.value.playState === 'won'" />
   </div>
 </template>

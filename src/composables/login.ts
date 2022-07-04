@@ -20,9 +20,9 @@ export class PlayGames {
   ]
 
   constructor(
-    public width: number = 10,
-    public height: number = 10,
-    public mines: number = 10) {
+    public width: number = 6,
+    public height: number = 6,
+    public mines: number = 1) {
     this.reset()
   }
 
@@ -159,5 +159,4 @@ export class PlayGames {
       else { this.state.value.playState = 'won' }
     }
   }
-  // watchEffect(checkGameStatus)
 }
