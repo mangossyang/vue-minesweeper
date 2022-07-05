@@ -5,6 +5,7 @@ interface GameState {
   board: BlockState[][]
   mineGenerator: boolean
   playState: 'paly' | 'won' | 'lost'
+  startMS?: number
 }
 export class PlayGames {
   state = ref() as Ref<GameState>
@@ -20,9 +21,9 @@ export class PlayGames {
   ]
 
   constructor(
-    public width: number = 6,
-    public height: number = 6,
-    public mines: number = 1) {
+    public width: number,
+    public height: number,
+    public mines: number) {
     this.reset()
   }
 
@@ -42,8 +43,14 @@ export class PlayGames {
     return Math.round(this.ramdom(min, max))
   }
 
-  reset() {
+  reset(width = 9,
+    height = 9,
+    mines = 10) {
+    this.width = width
+    this.height = height
+    this.mines = mines
     this.state.value = {
+      startMS: +new Date(),
       mineGenerator: false,
       playState: 'paly',
       board: Array.from({ length: this.height }, (_, y) => (
