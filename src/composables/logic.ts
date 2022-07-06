@@ -191,9 +191,7 @@ export class PlayGames {
   gameOver(state: PlayState) {
     this.state.value.playState = state
     this.state.value.endMS = +Date.now()
-    if (state === 'lost') {
-      console.log('------>', 112)
+    if (state === 'lost')
       this.showAllMine()
-    }
   }
 }
