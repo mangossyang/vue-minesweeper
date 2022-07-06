@@ -32,7 +32,7 @@ function newGame(mode: 'easy' | 'medium' | 'hard') {
 </script>
 
 <template>
-  <div p5 w-full overflow-auto>
+  <div p5 w-full overflow-auto @contextmenu.prevent="() => {}">
     minesweeper
     <div flex="~ gap-1" justify-center p-4>
       <button btn @click="newGame('easy')">

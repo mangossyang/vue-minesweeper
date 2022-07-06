@@ -175,12 +175,15 @@ export class PlayGames {
   }
 
   autoExpend(block: BlockState) {
+    if (this.state.value.playState !== 'play' || block.flagged)
+      return
     const siblingsMines = this.getSiblings(block)
     const flagged = siblingsMines.reduce((a, b) => (a + (b.flagged ? 1 : 0)), 0)
     if (flagged === block.adjacentMines) {
       siblingsMines.forEach((i) => {
         if (!i.flagged && !i.revealed) {
           i.revealed = true
+          this.expendZero(i)
           if (i.mine)
             this.gameOver('lost')
         }
