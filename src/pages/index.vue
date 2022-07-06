@@ -5,7 +5,7 @@ import { PlayGames } from '~/composables/login'
 const play = new PlayGames(9, 9, 10)
 
 const now = $(useNow())
-const timerMS = $computed(() => Math.round((+now - (play.state.value.startMS)) / 1000))
+const timerMS = $computed(() => Math.round(((play.state.value.endMS || +now) - (play.state.value.startMS)) / 1000))
 
 useStorage('minesweeper-state', play.state)
 const state = computed(() => play.board)
@@ -70,6 +70,7 @@ function newGame(mode: 'easy' | 'medium' | 'hard') {
         :block="block"
         @click="play.onClick(block)"
         @contextmenu.prevent="play.onRightClick(block)"
+        @dblclick="play.autoExpend(block)"
       />
     </div>
     <Confetti :passed="play.state.value.playState === 'won'" />
