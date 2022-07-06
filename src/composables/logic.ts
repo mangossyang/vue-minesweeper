@@ -1,7 +1,7 @@
 import type { Ref } from 'vue'
 import type { BlockState } from '~/types'
 
-type PlayState = 'paly' | 'won' | 'lost'
+type PlayState = 'ready' | 'play' | 'won' | 'lost'
 interface GameState {
   board: BlockState[][]
   mineGenerator: boolean
@@ -54,7 +54,7 @@ export class PlayGames {
     this.state.value = {
       startMS: +new Date(),
       mineGenerator: false,
-      playState: 'paly',
+      playState: 'ready',
       board: Array.from({ length: this.height }, (_, y) => (
         Array.from({ length: this.width }, (_, x): BlockState => (
           {
@@ -127,7 +127,11 @@ export class PlayGames {
   }
 
   onClick(block: BlockState) {
-    if (this.state.value.playState !== 'paly' || block.flagged)
+    if (this.state.value.playState === 'ready') {
+      this.state.value.playState = 'play'
+      this.state.value.startMS = +new Date()
+    }
+    if (this.state.value.playState !== 'play' || block.flagged)
       return
     if (!this.state.value.mineGenerator) {
       this.generatorMines(block)
@@ -152,7 +156,7 @@ export class PlayGames {
   }
 
   onRightClick(block: BlockState) {
-    if (block.revealed || this.state.value.playState !== 'paly')
+    if (block.revealed || this.state.value.playState !== 'play')
       return
     block.flagged = !block.flagged
   }
@@ -175,10 +179,11 @@ export class PlayGames {
     const flagged = siblingsMines.reduce((a, b) => (a + (b.flagged ? 1 : 0)), 0)
     if (flagged === block.adjacentMines) {
       siblingsMines.forEach((i) => {
-        if (!i.flagged && !i.revealed)
+        if (!i.flagged && !i.revealed) {
           i.revealed = true
-        if (i.mine)
-          this.gameOver('lost')
+          if (i.mine)
+            this.gameOver('lost')
+        }
       })
     }
   }
@@ -186,7 +191,9 @@ export class PlayGames {
   gameOver(state: PlayState) {
     this.state.value.playState = state
     this.state.value.endMS = +Date.now()
-    if (state === 'lost')
+    if (state === 'lost') {
+      console.log('------>', 112)
       this.showAllMine()
+    }
   }
 }

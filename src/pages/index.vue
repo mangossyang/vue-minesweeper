@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import MineBlock from './MineBlock.vue'
-import { PlayGames } from '~/composables/login'
 
 const play = new PlayGames(9, 9, 10)
 
@@ -70,7 +69,7 @@ function newGame(mode: 'easy' | 'medium' | 'hard') {
         :block="block"
         @click="play.onClick(block)"
         @contextmenu.prevent="play.onRightClick(block)"
-        @dblclick="play.autoExpend(block)"
+        @lrclick="() => play.autoExpend(block)"
       />
     </div>
     <Confetti :passed="play.state.value.playState === 'won'" />
